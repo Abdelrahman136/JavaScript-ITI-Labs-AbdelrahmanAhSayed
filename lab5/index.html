@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="slideshow">
+        <h1>1- SlideShow</h1>
+        <button id="next-btn">next</button>
+        <button id="previous-btn">previous</button>
+        <button id="slideshow-btn">slideshow</button>
+        <button id="stop-btn">stop</button>
+        <div id="slider"></div>
+    </div>
+    <section id="addDeleteStudentsGrads">
+        <form action="" method="get">
+            <div>
+                <label>Department</label> &nbsp;&nbsp;&nbsp;
+                <input type="radio" id="SD" value="SD" name="dp">
+                <label>SD</label>
+                <input type="radio" id="OS" value="OS" name="dp">
+                <label>OS</label>
+                <input type="radio" id="EL" value="EL" name="dp">
+                <label>EL</label>
+            </div>
+            <div>
+                <label for="std_name">StudentName</label>
+                <input type="text" name="std_name" id="std_name" placeholder="enter name Ex. Abdelrahman">
+                <br>
+                <label for="std_garde">StudentGrade</label>
+                <input type="text" name="std_garde" id="std_grade" placeholder="enter grade Ex. 50">
+                <br>
+                <input type="button" value="add" id="Add">
+            </div>
+        </form>
+        <label for="">Sort</label>
+        <select name="stdNameDropDown" id="stdNameDropDown">
+            <option>Name</option>
+            <option>grade</option>
+        </select>
+        <label for="reverse">reverse</label> <input type="checkbox" name="reverse" id="reverse">
+        <br> <br>
+        <label for="">Filter</label>
+        <select name="filterDropDown" id="filterDropDown">
+            <option>All</option>
+            <option>Accepted</option>
+            <option>Not Accepted</option>
+        </select>
+        <br> <br>
+        <table>
+            <tbody id="stduents"></tbody>
+        </table>
+    </section>
+    <script src="app.js"></script>
+</body>
+</html>

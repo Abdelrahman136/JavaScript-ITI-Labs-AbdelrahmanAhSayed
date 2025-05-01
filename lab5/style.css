@@ -1,0 +1,33 @@
+#addDeleteStudentsGrads{
+    background-color: lightgray;
+    width: 400px;
+    margin: auto;
+    margin-top: 20px;
+    padding: 10px 20px;
+    min-height: 20vh;
+    max-height: 280px;
+    overflow: auto;
+}
+#addDeleteStudentsGrads *{
+    margin-top: 5px;
+}
+#slider{
+    margin-top: 20px;
+    width: 350px;
+    height: 35vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+table, td{
+    border: 1px solid gray;
+    width: 80%;
+}
+.SD{
+    background-color: rgba(89, 89, 186, 0.928);
+}
+.OS{
+    background-color: white;
+}
+.EL{
+    background-color: lightcoral;
+}
