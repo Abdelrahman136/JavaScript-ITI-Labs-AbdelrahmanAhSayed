@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Movement</title>
+    <style>
+        /* Basic styles for the car and movement */
+        #car {
+            position: absolute; /* Important for top and left positioning */
+            width: 150px; /* Or whatever size your image is */
+            height: auto; /* Maintain aspect ratio */
+            transition: left 0.5s ease, top 0.5s ease; /* Smooth transition for movement */
+        }
+        .container {
+            position: relative; /* Make sure the car's parent is a positioning context */
+            width: 100%;
+            height: 200px; /* Give it some height */
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="car" src="imgs/images6-removebg-preview.png" alt="Car">
+    </div>
+    <div style="margin-top: 20px;">
+        <button id="moveLeft">Move Left</button>
+        <button id="moveRight">Move Right</button>
+    </div>
+
+    <script>
+        // ES6 Class for Engine (Abstract)
+        class Engine {
+            #source; // Private source property
+            static #count = 0; // Private static count
+
+            constructor(source) {
+                if (new.target === Engine) {
+                    throw new TypeError("Cannot construct Engine instances directly");
+                }
+                this.#source = source;
+                Engine.#count++;
+            }
+
+            get source() {
+                return this.#source;
+            }
+
+            static get count() {
+                return Engine.#count;
+            }
+        }
+
+        // ES6 Class for Car (inherits from Engine)
+        class Car extends Engine {
+            #top;
+            #left;
+            #carElement; // Store the actual DOM element
+
+            constructor(top, left, source) {
+                super(source); // Call the parent constructor with the source
+                this.#top = top;
+                this.#left = left;
+                this.#carElement = document.getElementById('car'); //Get the car element.
+
+                // Check if the element exists before setting styles.
+                if (this.#carElement) {
+                    this.top = top;  // set initial position
+                    this.left = left;
+                }
+                else{
+                    console.error("Car element not found.  Ensure the element with id 'car' exists in the DOM.");
+                }
+            }
+
+            // Top setter
+            set top(top) {
+                this.#top = top;
+                if (this.#carElement) {
+                    this.#carElement.style.top = `${top}px`;
+                }
+            }
+
+            // Left setter
+            set left(left) {
+                this.#left = left;
+                 if (this.#carElement) {
+                    this.#carElement.style.left = `${left}px`;
+                }
+            }
+
+             get left() {
+                return this.#left;
+            }
+             get top() {
+                return this.#top;
+            }
+
+            // Move left method
+            moveLeft() {
+                this.left -= 10; // Move 10 pixels to the left
+            }
+
+            // Move right method
+            moveRight() {
+                this.left += 10;
+            }
+
+            // Change style method
+            changeStyle(style) {
+                if (this.#carElement) {
+                  Object.assign(this.#carElement.style, style); // Use Object.assign
+                }
+            }
+
+            // Move car method with boundaries
+           moveCar(direction) {
+                const containerWidth = document.querySelector('.container').offsetWidth;
+                const carWidth = this.#carElement.offsetWidth;
+
+                let intervalId = setInterval(() => {
+                    if (direction === 'left') {
+                        this.left -= 5; // Smaller step for smoother animation
+                        if (this.left <= 0) {
+                            this.left = 0; // Stop at left boundary
+                            clearInterval(intervalId);
+                        }
+                    } else if (direction === 'right') {
+                        this.left += 5;
+                        if (this.left + carWidth >= containerWidth) {
+                            this.left = containerWidth - carWidth; // Stop at right boundary
+                            clearInterval(intervalId);
+                        }
+                    } else {
+                        clearInterval(intervalId); // Stop if invalid direction
+                    }
+                }, 16); // ~60fps (1000ms / 60) -  use 16 for better performance
+            }
+        }
+
+        // --- Usage ---
+        // 1. Create a Car instance.  Make sure the 'car.png' image exists in the same directory.
+        const myCar = new Car(50, 20, 'imgs/images6-removebg-preview.png'); // Initial position (50px top, 20px left)
+
+        // 2.  Use the methods.
+        document.getElementById('moveLeft').addEventListener('click', () => {
+            // myCar.moveLeft();
+            myCar.moveCar("left")
+        });
+        document.getElementById('moveRight').addEventListener('click', () => {
+            // myCar.moveRight();
+            myCar.moveCar("right")
+        });
+
+        // Example of changing the style
+        myCar.changeStyle({
+            border: '2px solid blue',
+            borderRadius: '5px',
+            transition: 'transform 0.2s ease', /* Add smooth transition */
+            transform: 'scale(1.1)',  // Enlarge the car a bit on initial style change
+        });
+
+       // Reset transform after a delay
+        setTimeout(()=> {
+            myCar.changeStyle({
+                transform: 'scale(1)',
+            });
+        }, 200);
+
+        // Example of moveCar
+        //myCar.moveCar('left'); // Start moving left.  Uncomment to test.
+        //myCar.moveCar('right');
+    </script>
+</body>
+</html>
